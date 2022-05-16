@@ -13,7 +13,7 @@ func InArray[T NumberString](needle T, hayStack []T) bool {
 	return false
 }
 
-type ArrayMapForTrimCallback func(s, cutset string) string
+type arrayMapForTrimCallback func(s, cutset string) string
 
 // ArrayMapForTrim 数组过滤
 // Example:
@@ -22,7 +22,7 @@ type ArrayMapForTrimCallback func(s, cutset string) string
 // data = ArrayMapForTrim(data, "'", strings.TrimRight)
 // data = ArrayMapForTrim(data, "'", strings.TrimPrefix)
 // data = ArrayMapForTrim(data, "'", strings.TrimSuffix)
-func ArrayMapForTrim(hayStack []string, cutset string, callback ArrayMapForTrimCallback) []string {
+func ArrayMapForTrim(hayStack []string, cutset string, callback arrayMapForTrimCallback) []string {
 	newArray := make([]string, 0)
 	for _, s := range hayStack {
 		s = callback(s, cutset)
