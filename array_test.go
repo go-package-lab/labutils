@@ -15,7 +15,7 @@ func TestArrayMapForTrim(t *testing.T) {
 	type args struct {
 		hayStack []string
 		cutset   string
-		callback ArrayMapForTrimCallback
+		callback arrayMapForTrimCallback
 	}
 	tests := []struct {
 		name string
