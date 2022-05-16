@@ -17,7 +17,7 @@ func MapFilterToJson(v map[string]any, filterKeys ...string) (string, error) {
 	if len(filterKeys) > 0 {
 		dat := make(map[string]any, 0)
 		for key, value := range v {
-			if InSlice(key, filterKeys) {
+			if InArray(key, filterKeys) {
 				continue
 			}
 			dat[key] = value
