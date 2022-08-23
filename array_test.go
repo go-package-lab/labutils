@@ -1,8 +1,3 @@
-// @Description
-// @Author wangcanjia
-// @Copyright 2022 sndks.com. All rights reserved.
-// @LastModify 2022/5/16 17:56
-
 package labutils
 
 import (
