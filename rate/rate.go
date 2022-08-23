@@ -320,30 +320,19 @@ func (lim *Limiter) SetBurstAt(now time.Time, newBurst int) {
 // reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN.
 func (lim *Limiter) reserveN(now time.Time, n int, maxFutureReserve time.Duration) Reservation {
 	lim.mu.Lock()
-	defer lim.mu.Unlock()
 
 	if lim.limit == Inf {
+		lim.mu.Unlock()
 		return Reservation{
 			ok:        true,
 			lim:       lim,
 			tokens:    n,
 			timeToAct: now,
 		}
-	} else if lim.limit == 0 {
-		var ok bool
-		if lim.burst >= n {
-			ok = true
-			lim.burst -= n
-		}
-		return Reservation{
-			ok:        ok,
-			lim:       lim,
-			tokens:    lim.burst,
-			timeToAct: now,
-		}
 	}
 
-	now, last, tokens := lim.advance(now)
+	// 这里忽略advance返回的第二个字段
+	now, _, tokens := lim.advance(now)
 
 	// Calculate the remaining number of tokens resulting from the request.
 	tokens -= float64(n)
@@ -373,10 +362,10 @@ func (lim *Limiter) reserveN(now time.Time, n int, maxFutureReserve time.Duratio
 		lim.last = now
 		lim.tokens = tokens
 		lim.lastEvent = r.timeToAct
-	} else {
-		lim.last = last
 	}
+	// 这里如果不ok的话不执行任何操作
 
+	lim.mu.Unlock()
 	return r
 }
 
